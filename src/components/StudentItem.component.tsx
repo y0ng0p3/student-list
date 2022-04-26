@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import styles from "./StudentItem.module.css";
 
 /* This interface represents the structure of a student data */
 export interface IStudent {
@@ -37,19 +38,21 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
   }, []);
 
   return (
-    <div>
-      <img src={details.pic} height={100} width={100} alt="picture" /> <br />
-      <br />
-      <div>
-        <strong>
-          {details.firstName} {details.lastName}
-        </strong>
+    <div className={styles.student}>
+      <div className={styles.picture}>
+        <img src={details.pic} height={120} width={120} alt="picture" />
       </div>
-      <br />
-      <div>Email: {details.email}</div> <br />
-      <div>Company: {details.company}</div> <br />
-      <div>Skil: {details.skill}</div> <br />
-      <div>Average: {average}%</div> <br />
+      <div className={styles.studentDetails}>
+        <h4 className={styles.name}>
+            {details.firstName} {details.lastName}
+        </h4>
+        <span className={styles.infos}>
+        <span>Email: {details.email}</span>
+        <span>Company: {details.company}</span>
+        <span>Skil: {details.skill}</span>
+        <span>Average: {average}%</span>
+        </span>
+      </div>
     </div>
   );
 };
