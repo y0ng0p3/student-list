@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <Fragment>
+    <div className={"App"}>
       {loading ? (
         <h3 style={{ color: "teal", textAlign: "center", marginTop: "20px" }}>
           Loading...
@@ -38,7 +38,7 @@ function App() {
           <StudentItemComponent key={student.id} details={student} />
         ))
       )}
-    </Fragment>
+    </div>
   );
 }
 
