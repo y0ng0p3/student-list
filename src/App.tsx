@@ -1,25 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
+import "./App.css";
+import { StudentItemComponent, IStudent } from "./components";
 
 function App() {
+  const [students, setStudents] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://api.hatchways.io/assessment/students")
+      .then((response) => {
+        setStudents(response.data.students);
+      })
+      .catch((err) => {
+        setError(err);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      {loading ? (
+        <h3 style={{ color: "teal", textAlign: "center", marginTop: "20px" }}>
+          Loading...
+        </h3>
+      ) : error ? (
+        <h3 style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
+          Oops! Something went wrong.
+        </h3>
+      ) : (
+        students.map((student: IStudent) => (
+          <StudentItemComponent key={student.id} details={student} />
+        ))
+      )}
+    </Fragment>
   );
 }
 
