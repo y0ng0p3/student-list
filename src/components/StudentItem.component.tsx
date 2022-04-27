@@ -24,12 +24,14 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
 ) => {
   const { details } = props;
   const [average, setAverage] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [animateClose, setAnimateClose] = useState(false);
 
   useEffect(() => {
-    // Convert grandes strings into numbers.
+    // Convert grades strings into numbers.
     const gradesInt = details.grades.map((grade: string) => parseInt(grade));
 
-    // Calcul the student average.
+    // Calculate the student average.
     const sum = gradesInt.reduce(
       (acc: number, grade: number) => (acc += grade),
       0
@@ -37,22 +39,48 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
     setAverage(sum / details.grades.length);
   }, []);
 
+  const handleOpen = () => {
+    setAnimateClose(!animateClose);
+    setTimeout(() => setOpen(!open), 180);
+  };
+
   return (
     <div className={styles.student}>
       <div className={styles.picture}>
         <img src={details.pic} height={120} width={120} alt="picture" />
       </div>
       <div className={styles.studentDetails}>
-        <h4 className={styles.name}>
+        <div className={styles.head}>
+          <h4 className={styles.name}>
             {details.firstName} {details.lastName}
-        </h4>
-        <span className={styles.infos}>
-        <span>Email: {details.email}</span>
-        <span>Company: {details.company}</span>
-        <span>Skil: {details.skill}</span>
-        <span>Average: {average}%</span>
-        </span>
+          </h4>
+          <button className={styles.button} onClick={handleOpen}>
+            <i className={`las la-${open ? "minus" : "plus"}`}></i>
+          </button>
+        </div>
+        <div className={styles.infos}>
+          <span>Email: {details.email}</span>
+          <span>Company: {details.company}</span>
+          <span>Skil: {details.skill}</span>
+          <span>Average: {average}%</span>
+        </div>
       </div>
+      {open ? (
+        <div
+          className={`${styles.infos} ${styles.accordion} ${
+            animateClose ? styles.accordionOpen : styles.accordionClose
+          }`}
+        >
+          <span>City: {details.city}</span>
+          {details.grades.map((grade: string, i: number) => (
+            <span>
+              Test {i + 1}: {`${grade}%`}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
