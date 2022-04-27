@@ -9,8 +9,29 @@
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  position: relative;
   
 }
 ::-webkit-scrollbar {
   display: none;
+}
+
+.filter {
+  margin: 1% 2%;
+  text-align: left;
+}
+.filter-input {
+  width: 100%;
+  border: none;
+  border-bottom: solid 1px #0000002e;
+  text-decoration: none;
+  padding: 1% 0;
+  font-size: 18px;
+  font-family: "Raleway";
+  outline: none;
+}
+.filter-input:focus, .filter-input:active {
+  border: none;
+  border-bottom: solid 1px #0000002e;
+  /* background-color: lightblue; */
 }
