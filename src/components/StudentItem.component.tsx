@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StudentItem.module.css";
 
 /* This interface represents the structure of a student data */
@@ -12,20 +12,23 @@ export interface IStudent {
   lastName: string;
   pic: string;
   skill: string;
+  tags: string[];
 }
 
 /* Allows us to bind all students data once to props */
 export interface IStudentItemComponentProps {
   details: IStudent;
+  addTag: (tag: string, id: string) => void;
 }
 
 export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
   props
 ) => {
-  const { details } = props;
+  const { details, addTag } = props;
   const [average, setAverage] = useState(0);
   const [open, setOpen] = useState(false);
   const [animateClose, setAnimateClose] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     // Convert grades strings into numbers.
@@ -37,11 +40,22 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
       0
     );
     setAverage(sum / details.grades.length);
+
+    if (details.tags?.length) setTags(details.tags);
   }, []);
 
   const handleOpen = () => {
     setAnimateClose(!animateClose);
     setTimeout(() => setOpen(!open), 180);
+  };
+
+  const handleTagInput = (event: any) => {
+    if (event.target.value && event.key === "Enter") {
+      event.preventDefault();
+      setTags([...tags, event.target.value]);
+      addTag(event.target.value, details.id);
+      event.currentTarget.value = "";
+    }
   };
 
   return (
@@ -81,6 +95,19 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
       ) : (
         <></>
       )}
+      <div className={styles.addTag}>
+        <div className={styles.tags}>
+          {tags.map((tag: string, i: number) => (
+            <span key={i} className={styles.tag}>{tag}</span>
+          ))}
+        </div>
+        <input
+          className={styles.tagInput}
+          type="text"
+          placeholder="Add a tag"
+          onKeyDown={handleTagInput}
+        />
+      </div>
     </div>
   );
 };

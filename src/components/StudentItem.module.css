@@ -1,7 +1,7 @@
 .student {
   display: grid;
   grid-template-columns: min-content 1fr min-content;
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: min-content 1fr min-content;
   align-items: center;
   border-bottom: solid 1px #0000002e;
   padding: 0 2%;
@@ -92,4 +92,39 @@
   to {
     height: 10%;
   }
+}
+
+.addTag {
+  margin-left: 2%;
+  margin-bottom: 2%;
+  padding-left: 5%;
+  text-align: left;
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: fit-content;
+}
+.tags {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.tag {
+  width: fit-content;
+  padding: 10px 8px;
+  background-color: #eee;
+  border-radius: 5px;
+  margin: 0 3px;
+}
+.tagInput {
+  border: none;
+  border-bottom: solid 1px #0000002e;
+  text-decoration: none;
+  margin: 10px 0;
+  padding-bottom: 8px;
+  font-size: 18px;
+  font-family: "Raleway";
+  outline: none;
 }
