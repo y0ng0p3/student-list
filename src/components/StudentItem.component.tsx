@@ -1,19 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { KeyboardEvent, useEffect, useState } from "react";
 import styles from "./StudentItem.module.css";
-
-/* This interface represents the structure of a student data */
-export interface IStudent {
-  city: string;
-  company: string;
-  email: string;
-  firstName: string;
-  grades: string[];
-  id: string;
-  lastName: string;
-  pic: string;
-  skill: string;
-  tags: string[];
-}
+import { IStudent } from "../models";
 
 /* Allows us to bind all students data once to props */
 export interface IStudentItemComponentProps {
@@ -49,11 +36,11 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
     setTimeout(() => setOpen(!open), 180);
   };
 
-  const handleTagInput = (event: any) => {
-    if (event.target.value && event.key === "Enter") {
+  const handleTagInput = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value && event.key === "Enter") {
       event.preventDefault();
-      setTags([...tags, event.target.value]);
-      addTag(event.target.value, details.id);
+      setTags([...tags, event.currentTarget.value]);
+      addTag(event.currentTarget.value, details.id);
       event.currentTarget.value = "";
     }
   };
@@ -68,7 +55,11 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
           <h4 className={styles.name}>
             {details.firstName} {details.lastName}
           </h4>
-          <button className={styles.button} onClick={handleOpen}>
+          <button
+            data-testid="js-button"
+            className={styles.button}
+            onClick={handleOpen}
+          >
             <i className={`las la-${open ? "minus" : "plus"}`}></i>
           </button>
         </div>
@@ -87,7 +78,7 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
         >
           <span>City: {details.city}</span>
           {details.grades.map((grade: string, i: number) => (
-            <span>
+            <span key={i}>
               Test {i + 1}: {`${grade}%`}
             </span>
           ))}
@@ -98,7 +89,9 @@ export const StudentItemComponent: React.FC<IStudentItemComponentProps> = (
       <div className={styles.addTag}>
         <div className={styles.tags}>
           {tags.map((tag: string, i: number) => (
-            <span key={i} className={styles.tag}>{tag}</span>
+            <span key={i} className={styles.tag}>
+              {tag}
+            </span>
           ))}
         </div>
         <input

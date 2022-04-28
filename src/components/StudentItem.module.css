@@ -128,3 +128,6 @@
   font-family: "Raleway";
   outline: none;
 }
+.tagInput:focus {
+  border-bottom-color: #111;
+}
