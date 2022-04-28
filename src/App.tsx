@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-import { StudentItemComponent, IStudent } from "./components";
-
-type Getter = (student: IStudent) => string 
+import { StudentItemComponent } from "./components";
+import { IStudent } from "./models";
+import { addStudentTag, filterByNameAndTag } from "./utils";
 
 function App() {
   const [students, setStudents] = useState<IStudent[]>([]);
@@ -37,29 +37,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const filteredByName = filterStudent(students, getName, filterName);
-    const filteredByTag = filterStudent(filteredByName, getTag, filterTag);
-    setFilteredStudents(filteredByTag);
+    const filtered = filterByNameAndTag(students, filterName, filterTag);
+    setFilteredStudents(filtered);
   }, [filterName, filterTag]);
-
-  const filterStudent = (students: IStudent[], getter: Getter, value: string, ) => {
-    if (value === "") return students;
-
-    const filtered = students.filter((student) => {
-      const pattern = new RegExp(value, "i");
-      const stringToFilter = getter(student)
-      return stringToFilter.match(pattern)?.length;
-    });
-    return filtered;
-  };
-
-  const getName = (student: IStudent) => {
-    return `${student.firstName} ${student.lastName}`;
-  }
-
-  const getTag = (student: IStudent) => {
-    return `${student.tags.join(" ")}`;
-  }
 
   const handleFilterByName = (event: ChangeEvent<HTMLInputElement>) => {
     setFilterName(event.target.value);
@@ -70,20 +50,14 @@ function App() {
   };
 
   const handleAddTag = (tag: string, id: string) => {
-    let index = 0;
-    let newStudents = students;
-    const found = students.find((student: IStudent) => student.id === id);
-    let filteredIndex = 0;
-    let newFilteredStudents = filteredStudents;
-    if (found) {
-      index = students.indexOf(found);
-      filteredIndex = filteredStudents.indexOf(found);
-      found.tags.push(tag);
-      newStudents[index] = found;
-      newFilteredStudents[filteredIndex] = found;
-      setStudents(newStudents);
-      setFilteredStudents(newFilteredStudents);
-    }
+    const { newStudents, newFilteredStudents } = addStudentTag(
+      students,
+      filteredStudents,
+      tag,
+      id
+    );
+    if (newStudents.length) setStudents(newStudents);
+    if (newFilteredStudents.length) setFilteredStudents(newFilteredStudents);
   };
 
   return (
