@@ -62,9 +62,10 @@ function App() {
 
   return (
     <div className={"App"}>
+      <div>STUDENT LIST</div>
       <div className={"filter"}>
         <input
-          className="filter-input"
+          className="filter-name-input"
           onChange={handleFilterByName}
           type="text"
           placeholder="Search by name"
@@ -72,7 +73,7 @@ function App() {
       </div>
       <div className={"filter"}>
         <input
-          className="filter-input"
+          className="filter-tag-input"
           onChange={handleFilterByTag}
           type="text"
           placeholder="Search by tag"
@@ -105,6 +106,7 @@ function App() {
           )}
         </>
       )}
+      <a href="https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test">cypress e2e</a>
     </div>
   );
 }

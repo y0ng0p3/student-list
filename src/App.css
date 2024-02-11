@@ -20,7 +20,7 @@
   margin: 1% 2%;
   text-align: left;
 }
-.filter-input {
+.filter-name-input, .filter-tag-input {
   width: 100%;
   border: none;
   border-bottom: solid 1px #0000002e;
@@ -30,7 +30,8 @@
   font-family: "Raleway";
   outline: none;
 }
-.filter-input:focus, .filter-input:active {
+.filter-name-input:focus, .filter-tag-input:focus, 
+.filter-name-input:active, .filter-tag-input:active {
   border: none;
   border-bottom: solid 1px #0000002e;
   /* background-color: lightblue; */
